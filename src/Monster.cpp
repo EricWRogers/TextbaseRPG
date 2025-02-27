@@ -1,5 +1,7 @@
 #include "Monster.hpp"
 #include "Room.hpp"
+#include "Player.hpp"
+
 
 void Monster::Start()
 {
@@ -8,5 +10,9 @@ void Monster::Start()
 
 void Monster::Update()
 {
-    
+    Player& player = (Player&)room->GetPlayer();
+
+	Vector2D direction = player.GetPosition() - m_position;
+
+	Print(direction);
 }
