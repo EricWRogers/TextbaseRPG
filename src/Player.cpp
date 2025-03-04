@@ -5,6 +5,7 @@
 
 void Player::Start()
 {
+	health = 100;
     m_character = 'P';
 }
 

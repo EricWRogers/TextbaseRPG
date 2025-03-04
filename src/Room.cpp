@@ -1,6 +1,7 @@
 #include "Room.hpp"
 
 #include "Player.hpp"
+#include "Monster.hpp"
 
 #include <fstream>
 #include <string>
@@ -102,7 +103,12 @@ void Room::Load(std::string _path)
 
             if (m_map[y][x] == 'M')
             {
+				// spawn monster
+				Entity* monster = (Entity*)new Monster();
+				m_monsters.push_back(monster);
 
+				monster->Init(Vector2D(x, y));
+				monster->Start();
 
                 // clear
                 m_map[y][x] = ' ';
@@ -117,14 +123,6 @@ void Room::Update()
 
     if (m_player != nullptr)
     {
-        /*if (((Player*)m_player)->health <= 0)
-        {
-
-        }
-        
-        m_player->room = this;
-        m_player->Update();*/
-
         Player& player = *(Player*)m_player;
 
         if(player.health <= 0)
@@ -168,6 +166,10 @@ char Room::GetLocation(Vector2D _pos)
         if (m_player->GetPosition() == _pos)
             return m_player->Draw();
     
+	for (Entity* monstor : m_monsters)
+		if (monstor->GetPosition() == _pos)
+			return monstor->Draw();
+
     return m_map[_pos.y][_pos.x];
 }
 
